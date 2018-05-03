@@ -20,7 +20,7 @@ public class MathsProblem extends GPProblem {
     private static final float MIN_TERMINAL = 2.0f;
     private static final int MAX_NODES = 40;
 
-    public MathsProblem(GPConfiguration config) throws InvalidConfigurationException {
+    MathsProblem(GPConfiguration config) throws InvalidConfigurationException {
         super(config);
     }
 
