@@ -1,48 +1,41 @@
 package SymReg;
 
-import org.jgap.FitnessFunction;
-import org.jgap.Gene;
-import org.jgap.IChromosome;
+import org.jgap.gp.GPFitnessFunction;
+import org.jgap.gp.IGPProgram;
+import org.jgap.gp.terminal.Variable;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MathsFitnessFunction extends FitnessFunction {
-    Point[] input;
+public class MathsFitnessFunction extends GPFitnessFunction {
+    private List<Float> inputs, outputs;
 
-    public MathsFitnessFunction(Point[] input) {
-        this.input = input;
+    MathsFitnessFunction(List<Float> inputs, List<Float> outputs) {
+        this.inputs = inputs;
+        this.outputs = outputs;
     }
+
 
     @Override
-    protected double evaluate(IChromosome iChromosome) {
-        Gene[] genes = iChromosome.getGenes();
-        Op[] eq = new Op[genes.length];
-        for (int i = 0; i < genes.length; i++) {
-            eq[i] = (Op) genes[i].getAllele();
+    protected double evaluate(IGPProgram igpProgram) {
+        Variable var = igpProgram.getGPConfiguration().getVariable(MathsProblem.NAME);
+        float error = 0.0f;
+
+        for(int i = 0; i < inputs.size(); i++){
+            float x = inputs.get(i);
+            float y = outputs.get(i);
+            var.set(x);
+
+            float result = igpProgram.execute_float(0, null);
+            error += Math.abs(result - y);
+
+            if(Float.isInfinite(error)){
+                return Double.MAX_VALUE;
+            }
         }
 
-        double sum = 0;
-        for (int x = 0; x < input.length; x++) {
-            Point p = input[x];
-            sum = runEq(p, eq);
-            sum = sum / input.length;
+        if(error < 0.001){
+            return 0;
         }
-
-        return sum;
-    }
-
-    public double runEq(Point p, Op[] eq) {
-
-        double sum = 0;
-        double error;
-        double tmp;
-        for (int i = 0; i < eq.length; i++) {
-            tmp = eq[i].function(p.getX());
-
-            sum = sum + tmp;
-        }
-        error = p.getY() - sum;
-        return error * error;
+        return error;
     }
 }

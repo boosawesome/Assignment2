@@ -1,8 +1,13 @@
 package SymReg;
 
 import org.jgap.*;
-import org.jgap.impl.DefaultConfiguration;
-import sun.security.krb5.Config;
+import org.jgap.gp.GPFitnessFunction;
+import org.jgap.gp.GPProblem;
+import org.jgap.gp.IGPProgram;
+import org.jgap.gp.impl.DeltaGPFitnessEvaluator;
+import org.jgap.gp.impl.GPConfiguration;
+import org.jgap.gp.impl.GPGenotype;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,46 +15,59 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class SymReg {
 
-    private Point inputs[];
-    private FitnessFunction function;
-    private Configuration config;
+    private static final int POPULATION = 600;
+    private static final int ALLOWED_EVOLUTIONS = 400;
 
-    private static final int POPULATION = 100
-    private static final int ALLOWED_EVOLUTIONS = 51;
+    private static final String FILE = "regression.txt";
 
-    private Chromosome chrome;
+    private GPFitnessFunction readFile(String s){
 
-    public SymReg() throws InvalidConfigurationException {
-        readFile("regression.txt");
-
-        function = new MathsFitnessFunction(inputs);
-        config = new DefaultConfiguration();
-
-        Configuration.resetProperty(Configuration.PROPERTY_FITEVAL_INST);
-        config.setFitnessEvaluator(new DefaultFitnessEvaluator());
-        config.getGeneticOperators().clear();
-
-        config.setPopulationSize(POPULATION);
-        config.setFitnessFunction(function);
-
-    }
-
-    public Point[] readFile(String s){
-        List<Point> l = new ArrayList<>();
+        List<Float> inputs = new ArrayList<>();
+        List<Float> outputs = new ArrayList<>();
         try {
             Scanner scan = new Scanner(new File(s));
             while(scan.hasNext()){
-             l.add(new Point(scan.nextDouble(), scan.nextDouble()));
-             scan.nextLine();
+                inputs.add((float) scan.nextDouble());
+                outputs.add((float) scan.nextDouble());
+                scan.nextLine();
             }
             scan.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        return (Point[]) l.toArray();
+        return new MathsFitnessFunction(inputs, outputs);
+
     }
+
+    private SymReg() throws InvalidConfigurationException {
+        PropertyConfigurator.configure("log4j.properties");
+
+        GPFitnessFunction function = readFile(FILE);
+        GPConfiguration config = new GPConfiguration();
+
+        config.setMaxCrossoverDepth(10);
+        config.setMaxInitDepth(5);
+
+        config.setGPFitnessEvaluator(new DeltaGPFitnessEvaluator());
+        config.setPopulationSize(POPULATION);
+        config.setFitnessFunction(function);
+        config.setStrictProgramCreation(true);
+
+        GPProblem problem = new MathsProblem(config);
+        GPGenotype gp = problem.create();
+        gp.setVerboseOutput(true);
+
+        gp.evolve(ALLOWED_EVOLUTIONS);
+
+        IGPProgram bestProg = gp.getAllTimeBest();
+        gp.outputSolution(bestProg);
+    }
+
+
+
 
     public static void main(String args[]) throws InvalidConfigurationException {
         new SymReg();
