@@ -9,12 +9,21 @@ import java.util.List;
 public class MathsFitnessFunction extends GPFitnessFunction {
     private List<Float> inputs, outputs;
 
+    /**
+     *
+     * @param inputs x values
+     * @param outputs corresponding y values
+     */
     MathsFitnessFunction(List<Float> inputs, List<Float> outputs) {
         this.inputs = inputs;
         this.outputs = outputs;
     }
 
-
+    /**
+     *
+     * @param igpProgram the program
+     * @return error rate
+     */
     @Override
     protected double evaluate(IGPProgram igpProgram) {
         Variable var = igpProgram.getGPConfiguration().getVariable(MathsProblem.NAME);

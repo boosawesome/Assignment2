@@ -23,7 +23,13 @@ public class SymReg {
 
     private static final String FILE = "regression.txt";
 
-    private GPFitnessFunction readFile(String s){
+
+    /**
+     *
+     * @param s - file name
+     * @return Fitness Function
+     */
+    private GPFitnessFunction readFile(String s){//scans data in from text file
 
         List<Float> inputs = new ArrayList<>();
         List<Float> outputs = new ArrayList<>();
@@ -42,7 +48,11 @@ public class SymReg {
 
     }
 
-    private SymReg() throws InvalidConfigurationException {
+    /**
+     *
+     * @throws InvalidConfigurationException
+     */
+    private SymReg() throws InvalidConfigurationException {// builds and then runs program
         PropertyConfigurator.configure("log4j.properties");
 
         GPFitnessFunction function = readFile(FILE);
@@ -67,8 +77,11 @@ public class SymReg {
     }
 
 
-
-
+    /**
+     *
+     * @param args command line arguments
+     * @throws InvalidConfigurationException
+     */
     public static void main(String args[]) throws InvalidConfigurationException {
         new SymReg();
     }
