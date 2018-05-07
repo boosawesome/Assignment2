@@ -28,10 +28,20 @@ public class ClassProblem extends GPProblem {
     private static final int MAX_NODES = 40;
 
 
-    public ClassProblem(GPConfiguration config) throws InvalidConfigurationException {
+    /**
+     *
+     * @param config
+     * @throws InvalidConfigurationException
+     */
+    ClassProblem(GPConfiguration config) throws InvalidConfigurationException {
         super(config);
     }
 
+    /**
+     *
+     * @return
+     * @throws InvalidConfigurationException
+     */
     @Override
     public GPGenotype create() throws InvalidConfigurationException {
         GPConfiguration config = getGPConfiguration();

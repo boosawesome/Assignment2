@@ -23,7 +23,7 @@ public class MathsProblem extends GPProblem {
     /**
      *
      * @param config Configuration
-     * @throws InvalidConfigurationException
+     * @throws InvalidConfigurationException - Incorrect Configuration Object
      */
     MathsProblem(GPConfiguration config) throws InvalidConfigurationException {
         super(config);
@@ -32,7 +32,7 @@ public class MathsProblem extends GPProblem {
     /**
      *
      * @return Genotype
-     * @throws InvalidConfigurationException
+     * @throws InvalidConfigurationException - Incorrect Configuration object
      */
     @Override
     public GPGenotype create() throws InvalidConfigurationException {

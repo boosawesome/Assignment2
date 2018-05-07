@@ -16,8 +16,11 @@ public class Classification {
     private static final int POPULATION = 800;
     private static final int EVOLUTIONS = 600;
 
-
-    public Classification() throws InvalidConfigurationException {
+    /**
+     *
+     * @throws InvalidConfigurationException
+     */
+    private Classification() throws InvalidConfigurationException {
         PropertyConfigurator.configure("log4j.properties");
 
         CancerList cl = Processor.split(Processor.readFile());
@@ -51,6 +54,12 @@ public class Classification {
 
     }
 
+    /**
+     *
+     * @param igpProgram
+     * @param set
+     * @return
+     */
     private float accuracy(IGPProgram igpProgram, List<Cancer> set) {
         Variable F1 = igpProgram.getGPConfiguration().getVariable(ClassProblem.F1);
         Variable F2 = igpProgram.getGPConfiguration().getVariable(ClassProblem.F2);
@@ -96,6 +105,11 @@ public class Classification {
 
     }
 
+    /**
+     *
+     * @param args
+     * @throws InvalidConfigurationException
+     */
     public static void main(String[] args) throws InvalidConfigurationException {
         new Classification();
     }

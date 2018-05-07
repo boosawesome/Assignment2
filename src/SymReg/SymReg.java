@@ -50,7 +50,7 @@ public class SymReg {
 
     /**
      *
-     * @throws InvalidConfigurationException
+     * @throws InvalidConfigurationException - Incorrect Configuration object
      */
     private SymReg() throws InvalidConfigurationException {// builds and then runs program
         PropertyConfigurator.configure("log4j.properties");
@@ -80,7 +80,7 @@ public class SymReg {
     /**
      *
      * @param args command line arguments
-     * @throws InvalidConfigurationException
+     * @throws InvalidConfigurationException - Incorrect Configuration object
      */
     public static void main(String args[]) throws InvalidConfigurationException {
         new SymReg();

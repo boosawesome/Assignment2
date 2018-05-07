@@ -10,12 +10,21 @@ public class ClassFitnessFunction extends GPFitnessFunction {
 
     private List<Cancer> trainingSet;
 
-    public ClassFitnessFunction(List<Cancer> trainingSet) {
+    /**
+     *
+     * @param trainingSet
+     */
+    ClassFitnessFunction(List<Cancer> trainingSet) {
         this.trainingSet = trainingSet;
 
 
     }
 
+    /**
+     *
+     * @param igpProgram
+     * @return
+     */
     @Override
     protected double evaluate(IGPProgram igpProgram) {
         Variable f1 = igpProgram.getGPConfiguration().getVariable(ClassProblem.F1);
